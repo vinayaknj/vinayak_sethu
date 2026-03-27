@@ -603,7 +603,10 @@
 
     .carousel-track {
       display: flex;
-      transition: transform .5s cubic-bezier(.4, 0, .2, 1)
+      transition: transform .5s cubic-bezier(.4, 0, .2, 1);
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .carousel-slide {
@@ -1273,21 +1276,35 @@
     track.addEventListener('mouseenter', stopAuto);
     track.addEventListener('mouseleave', startAuto);
 
-    var tx = 0, ty = 0;
+    var tx = 0, ty = 0, isScrolling = false;
     track.addEventListener('touchstart', function (e) {
       tx = e.touches[0].clientX;
       ty = e.touches[0].clientY;
+      isScrolling = false;
       stopAuto();
     }, { passive: true });
 
+    track.addEventListener('touchmove', function (e) {
+      var dx = tx - e.touches[0].clientX;
+      var dy = ty - e.touches[0].clientY;
+      if (Math.abs(dy) > Math.abs(dx)) {
+        isScrolling = true;
+      }
+    }, { passive: true });
+
     track.addEventListener('touchend', function (e) {
+      if (isScrolling) {
+        startAuto();
+        return;
+      }
       var dx = tx - e.changedTouches[0].clientX;
-      var dy = ty - e.changedTouches[0].clientY;
-      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (Math.abs(dx) > 50) {
         moveSlide(dx > 0 ? 1 : -1);
       }
       startAuto();
     });
+
+    track.addEventListener('touchcancel', startAuto);
 
     // ===== RSVP =====
     function submitRSVP() {
