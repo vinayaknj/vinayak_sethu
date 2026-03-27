@@ -1128,17 +1128,28 @@
         <button class="carousel-btn next" onclick="moveSlide(1)">&#8594;</button>
         <div class="carousel-track" id="carouselTrack">
 
-          <div class="carousel-slide"><img src="4.jpg" alt="Gallery Photo 4" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="6.jpg" alt="Gallery Photo 6" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="7.jpg" alt="Gallery Photo 7" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="8.jpg" alt="Gallery Photo 8" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="11.jpg" alt="Gallery Photo 11" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="12.jpg" alt="Gallery Photo 12" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="13.jpg" alt="Gallery Photo 13" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="15.jpg" alt="Gallery Photo 15" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="16.jpg" alt="Gallery Photo 16" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="17.jpg" alt="Gallery Photo 17" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="18.jpg" alt="Gallery Photo 18" loading="lazy" decoding="async" draggable="false"></div>
+          <div class="carousel-slide"><img src="4.jpg" alt="Gallery Photo 4" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="6.jpg" alt="Gallery Photo 6" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="7.jpg" alt="Gallery Photo 7" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="8.jpg" alt="Gallery Photo 8" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="11.jpg" alt="Gallery Photo 11" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="12.jpg" alt="Gallery Photo 12" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="13.jpg" alt="Gallery Photo 13" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="15.jpg" alt="Gallery Photo 15" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="16.jpg" alt="Gallery Photo 16" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="17.jpg" alt="Gallery Photo 17" loading="lazy" decoding="async"
+              draggable="false"></div>
+          <div class="carousel-slide"><img src="18.jpg" alt="Gallery Photo 18" loading="lazy" decoding="async"
+              draggable="false"></div>
 
         </div>
       </div>
@@ -1193,8 +1204,8 @@
           <option value="yes">Joyfully Accepts</option>
           <option value="no">Regretfully Declines</option>
         </select>
-        <textarea placeholder="Any dietary requirements or a message for the couple…" rows="3" id="rsvp-msg"></textarea>
-        <button class="rsvp-submit" onclick="submitRSVP()">Confirm Attendance</button>
+        <textarea placeholder="Any dietary requirements or a message for the us" rows="3" id="rsvp-msg"></textarea>
+        <button class="rsvp-submit" onclick="submitRSVP()">Kindly RSVP</button>
         <p class="rsvp-success" id="rsvpSuccess">🌸 Thank you! We look forward to celebrating with you.</p>
       </div>
     </div>
@@ -1284,16 +1295,16 @@
     function goSlide(n, instant = false) {
       if (isTransitioning && !instant) return;
       isTransitioning = true;
-      
+
       track.style.transition = instant ? 'none' : 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
       cur = n;
-      
+
       // Calculate offset based on clones (cur is 0-indexed original, so index in allSlides is cur + 1)
       track.style.transform = 'translateX(-' + (cur + 1) * 100 + '%)';
       updateDots();
 
       if (!instant) {
-        setTimeout(function() { isTransitioning = false; }, 600);
+        setTimeout(function () { isTransitioning = false; }, 600);
       } else {
         isTransitioning = false;
       }
@@ -1302,12 +1313,12 @@
     function moveSlide(dir) {
       if (isTransitioning) return;
       isTransitioning = true;
-      
+
       track.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
       var nextCur = cur + dir;
       track.style.transform = 'translateX(-' + (nextCur + 1) * 100 + '%)';
 
-      setTimeout(function() {
+      setTimeout(function () {
         track.style.transition = 'none';
         if (nextCur >= slidesCount) {
           cur = 0;
@@ -1358,16 +1369,47 @@
 
     track.addEventListener('touchcancel', startAuto);
 
-    // ===== RSVP =====
+    // ===== RSVP (Google Sheets) =====
+    var scriptURL = 'https://script.google.com/macros/s/AKfycbx7r_Oshn_upsLr6G6fdHburcUEseU4MriA4MJcdTV0bwPl2J7uQUD_vnvrAUhA4VCvsw/exec'; 
+
     function submitRSVP() {
       var name = document.getElementById('rsvp-name').value.trim();
       var attend = document.getElementById('rsvp-attend').value;
+      var guests = document.getElementById('rsvp-guests').value;
+      var msg = document.getElementById('rsvp-msg').value;
+      var btn = document.querySelector('.rsvp-submit');
+      var successDiv = document.getElementById('rsvpSuccess');
+
       if (!name || !attend) { alert('Please fill in your name and attendance.'); return }
-      document.getElementById('rsvpSuccess').style.display = 'block';
-      document.getElementById('rsvp-name').value = '';
-      document.getElementById('rsvp-guests').value = '';
-      document.getElementById('rsvp-attend').selectedIndex = 0;
-      document.getElementById('rsvp-msg').value = '';
+
+      // Change button state
+      var originalBtnText = btn.innerText;
+      btn.innerText = 'Sending...';
+      btn.disabled = true;
+
+      var formData = new FormData();
+      formData.append('name', name);
+      formData.append('attend', attend);
+      formData.append('guests', guests);
+      formData.append('message', msg);
+
+      fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+        .then(function () {
+          successDiv.style.display = 'block';
+          btn.innerText = 'Sent!';
+          // Reset form
+          document.getElementById('rsvp-name').value = '';
+          document.getElementById('rsvp-guests').value = '';
+          document.getElementById('rsvp-attend').selectedIndex = 0;
+          document.getElementById('rsvp-msg').value = '';
+          if (typeof triggerPetals === 'function') triggerPetals();
+        })
+        .catch(function (error) {
+          console.error('Error!', error.message);
+          alert('Sorry, something went wrong. Please try again or reach out directly.');
+          btn.innerText = originalBtnText;
+          btn.disabled = false;
+        });
     }
 
     // ===== FADE IN =====
