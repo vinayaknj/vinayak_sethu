@@ -1005,7 +1005,7 @@
     .preloader {
       position: fixed;
       inset: 0;
-      background: var(--cream);
+      background: radial-gradient(ellipse at 20% 50%, rgba(184, 134, 11, .1) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(139, 26, 26, .08) 0%, transparent 60%), var(--cream);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1023,6 +1023,23 @@
       opacity: 0.04;
       pointer-events: none;
     }
+
+    /* Elegant floral watermarks in background of preloader */
+    .preloader-floral {
+      position: absolute;
+      width: clamp(120px, 25vw, 220px);
+      height: clamp(120px, 25vw, 220px);
+      opacity: 0.07;
+      pointer-events: none;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23D4AF37' d='M50 0C50 27.6 27.6 50 0 50c27.6 0 50 22.4 50 50 0-27.6 22.4-50 50-50-27.6 0-50-22.4-50-50z'/%3E%3Ccircle fill='%23D4AF37' cx='50' cy='50' r='5'/%3E%3C/svg%3E");
+    }
+    .preloader-floral-tl { top: 20px; left: 20px; transform: rotate(0deg); }
+    .preloader-floral-tr { top: 20px; right: 20px; transform: rotate(90deg); }
+    .preloader-floral-bl { bottom: 20px; left: 20px; transform: rotate(270deg); }
+    .preloader-floral-br { bottom: 20px; right: 20px; transform: rotate(180deg); }
+
     .preloader-content {
       text-align: center;
       position: relative;
@@ -1036,36 +1053,80 @@
       font-size: clamp(4rem, 15vw, 7rem);
       color: var(--dark);
       line-height: 1;
-      margin-bottom: 1rem;
+      margin: 0;
+      white-space: nowrap;
+      transform: translateY(-4px);
       animation: pulse-monogram 3s ease-in-out infinite;
       text-shadow: 0 1px 3px rgba(212, 175, 55, 0.1);
+      z-index: 2;
+    }
+    .preloader-circle-wrapper {
+      position: relative;
+      width: clamp(140px, 35vw, 210px);
+      height: clamp(140px, 35vw, 210px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .preloader-ring {
-      width: clamp(120px, 30vw, 180px);
-      height: clamp(120px, 30vw, 180px);
-      border: 1px solid rgba(212, 175, 55, 0.15);
+      width: 100%;
+      height: 100%;
+      border: 1.5px solid rgba(212, 175, 55, 0.32);
       border-radius: 50%;
       position: absolute;
+      top: 0;
+      left: 0;
       animation: rotate-ring 8s linear infinite;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.12), inset 0 0 15px rgba(212, 175, 55, 0.05);
+      z-index: 1;
     }
     .preloader-ring::after {
       content: '';
       position: absolute;
-      top: -3px;
+      top: -4px;
       left: 50%;
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       background: var(--gold);
       border-radius: 50%;
-      box-shadow: 0 0 10px var(--gold-light);
+      box-shadow: 0 0 12px var(--gold-light), 0 0 4px var(--gold);
+      transform: translateX(-50%);
+    }
+    .preloader-divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 1.2rem 0;
+      opacity: 0.4;
+    }
+    .preloader-date {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+      font-weight: 500;
+      animation: fade-text 2s ease-in-out infinite alternate;
+    }
+    .preloader-petal {
+      position: absolute;
+      width: clamp(12px, 3vw, 18px);
+      height: clamp(12px, 3vw, 18px);
+      background: linear-gradient(135deg, #F9E076, #D4AF37);
+      border-radius: 100% 0 100% 0;
+      opacity: 0;
+      pointer-events: none;
+      animation: float-petal 6s ease-in-out infinite;
+      z-index: 0;
     }
     .preloader-text {
       font-family: 'Cinzel', serif;
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 0.4em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-top: 1.5rem;
+      margin-top: 0;
       animation: fade-text 2s ease-in-out infinite alternate;
     }
     .preloader.fade-out {
@@ -1086,6 +1147,12 @@
       0% { opacity: 0.4; }
       100% { opacity: 1; }
     }
+    @keyframes float-petal {
+      0% { transform: translateY(-50px) rotate(0deg) scale(0.8); opacity: 0; }
+      15% { opacity: 0.55; }
+      85% { opacity: 0.55; }
+      100% { transform: translateY(105vh) rotate(360deg) scale(1.1); opacity: 0; }
+    }
   </style>
 </head>
 
@@ -1093,10 +1160,31 @@
 
   <!-- PRELOADER -->
   <div id="preloader" class="preloader">
+    <div class="preloader-floral preloader-floral-tl"></div>
+    <div class="preloader-floral preloader-floral-tr"></div>
+    <div class="preloader-floral preloader-floral-bl"></div>
+    <div class="preloader-floral preloader-floral-br"></div>
+    
+    <!-- Staggered falling flower petals -->
+    <div class="preloader-petal" style="left: 8%; animation-delay: 0s; animation-duration: 7s;"></div>
+    <div class="preloader-petal" style="left: 20%; animation-delay: 2.5s; animation-duration: 9s;"></div>
+    <div class="preloader-petal" style="left: 32%; animation-delay: 1s; animation-duration: 8s;"></div>
+    <div class="preloader-petal" style="left: 45%; animation-delay: 5s; animation-duration: 10s;"></div>
+    <div class="preloader-petal" style="left: 55%; animation-delay: 3.2s; animation-duration: 7.5s;"></div>
+    <div class="preloader-petal" style="left: 68%; animation-delay: 0.8s; animation-duration: 9.5s;"></div>
+    <div class="preloader-petal" style="left: 78%; animation-delay: 4.2s; animation-duration: 8.5s;"></div>
+    <div class="preloader-petal" style="left: 88%; animation-delay: 1.8s; animation-duration: 7s;"></div>
+    <div class="preloader-petal" style="left: 95%; animation-delay: 5.5s; animation-duration: 10.5s;"></div>
+
     <div class="preloader-content">
-      <div class="preloader-ring"></div>
-      <div class="preloader-monogram">S &amp; V</div>
-      <div class="preloader-text">Loading Invitation</div>
+      <div class="preloader-circle-wrapper">
+        <div class="preloader-ring"></div>
+        <div class="preloader-monogram">S &amp; V</div>
+      </div>
+      <div class="preloader-divider"></div>
+      <div class="preloader-text">Wedding Invitation</div>
+      <div class="preloader-date">December 27, 2026</div>
+      <div class="preloader-divider"></div>
     </div>
   </div>
 
