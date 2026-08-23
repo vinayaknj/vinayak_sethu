@@ -82,30 +82,6 @@
       will-change: transform;
     }
 
-    .floral-corner {
-      position: absolute;
-      width: clamp(100px, 20vw, 180px);
-      height: clamp(100px, 20vw, 180px);
-      opacity: 0.12;
-      pointer-events: none;
-      z-index: 1;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23D4AF37' d='M50 0C50 27.6 27.6 50 0 50c27.6 0 50 22.4 50 50 0-27.6 22.4-50 50-50-27.6 0-50-22.4-50-50z'/%3E%3Ccircle fill='%23D4AF37' cx='50' cy='50' r='5'/%3E%3C/svg%3E");
-    }
-
-    .floral-top-left {
-      top: -20px;
-      left: -20px;
-      transform: rotate(0deg);
-    }
-
-    .floral-bottom-right {
-      bottom: -20px;
-      right: -20px;
-      transform: rotate(180deg);
-    }
-
     /* NAV DOTS */
     .nav-dots {
       position: fixed;
@@ -816,15 +792,43 @@
     }
 
     .rsvp-form {
-      max-width: 480px;
+      max-width: 430px;
       margin: 0 auto;
+      padding: 9px;
       display: flex;
       flex-direction: column;
-      gap: 1.2rem
+      gap: .7rem;
+      text-align: left;
+      border: 1px solid rgba(184, 134, 11, .38);
+      border-radius: 20px;
+      background: rgba(255, 253, 248, .72);
+      box-shadow: 0 17px 38px rgba(69, 47, 17, .09);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .rsvp-form-inner {
+      position: relative;
+      z-index: 1;
+      padding: clamp(1rem, 3vw, 1.35rem);
+      border: 1px solid rgba(184, 134, 11, .18);
+      border-radius: 13px;
+    }
+
+    .rsvp-kicker,
+    .rsvp-choice-label {
+      display: block;
+      margin-bottom: .55rem;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .24em;
+      text-transform: uppercase;
     }
 
     .rsvp-form input,
-    .rsvp-form select,
     .rsvp-form textarea {
       width: 100%;
       padding: clamp(0.9rem, 3vw, 1.1rem) clamp(1rem, 4vw, 1.25rem);
@@ -843,8 +847,11 @@
       -webkit-appearance: none;
     }
 
+    .rsvp-form input {
+      padding: .8rem 1rem;
+    }
+
     .rsvp-form input:focus,
-    .rsvp-form select:focus,
     .rsvp-form textarea:focus {
       border-color: var(--gold);
       background: rgba(255, 255, 255, 0.9);
@@ -855,7 +862,7 @@
       background: var(--dark);
       color: var(--gold-light);
       border: none;
-      padding: 1.2rem;
+      padding: 1rem;
       font-family: 'Cinzel', serif;
       font-size: 11px;
       letter-spacing: .35em;
@@ -897,6 +904,58 @@
       transform: translateY(-1px)
     }
 
+    .rsvp-fields {
+      display: grid;
+      gap: .75rem;
+    }
+
+    .rsvp-choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .55rem;
+    }
+
+    .rsvp-choice {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .rsvp-choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .rsvp-choice span {
+      display: block;
+      padding: .75rem .4rem;
+      border: 1px solid rgba(184, 134, 11, .36);
+      border-radius: 999px;
+      color: var(--dark);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-align: center;
+      text-transform: uppercase;
+      transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease;
+    }
+
+    .rsvp-choice input:checked + span {
+      border-color: var(--dark);
+      background: var(--dark);
+      color: var(--gold-light);
+    }
+
+    .rsvp-choice:hover span { transform: translateY(-2px) }
+
+    .rsvp-choice input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 3px }
+
+    @media (max-width: 420px) {
+      .rsvp-choices { grid-template-columns: 1fr }
+    }
+
     .rsvp-success {
       display: none;
       font-family: 'Cormorant Garamond', serif;
@@ -905,6 +964,8 @@
       color: var(--gold);
       margin-top: 1rem
     }
+
+    #sec-7 .section-inner { padding-top: 3.5rem; padding-bottom: 3.5rem }
 
     /* CONTACT */
     .contact-section {
@@ -1224,8 +1285,6 @@
 
   <!-- HERO -->
   <section class="hero" id="sec-0">
-    <div class="floral-corner floral-top-left"></div>
-    <div class="floral-corner floral-bottom-right"></div>
     <div class="hero-bg"></div>
     <div class="hero-content">
       <div class="lang-tag">Wedding Reception</div>
@@ -1270,8 +1329,6 @@
 
   <!-- DATE & VENUE -->
   <section id="sec-2" style="position:relative; overflow:hidden;">
-    <div class="floral-corner floral-top-left"></div>
-    <div class="floral-corner floral-bottom-right"></div>
     <div class="section-inner fade-in">
       <h2 class="section-title">Save the Date</h2>
       <div class="gold-rule"></div>
@@ -1300,8 +1357,6 @@
 
   <!-- GALLERY -->
   <section class="gallery-section" id="sec-4" style="position:relative; overflow:hidden;">
-    <div class="floral-corner floral-top-left" style="opacity:0.08"></div>
-    <div class="floral-corner floral-bottom-right" style="opacity:0.08"></div>
     <div class="section-inner fade-in">
       <h2 class="section-title">Our Gallery</h2>
       <div class="gold-rule"></div>
@@ -1347,8 +1402,6 @@
 
   <!-- GOOGLE MAP -->
   <section id="sec-5" style="position:relative; overflow:hidden;">
-    <div class="floral-corner floral-top-left"></div>
-    <div class="floral-corner floral-bottom-right"></div>
     <div class="section-inner fade-in">
       <h2 class="section-title">The Venue</h2>
       <div class="gold-rule"></div>
@@ -1377,32 +1430,34 @@
 
   <!-- RSVP -->
   <section id="sec-7" style="position:relative; overflow:hidden;">
-    <div class="floral-corner floral-top-left"></div>
-    <div class="floral-corner floral-bottom-right"></div>
     <div class="section-inner fade-in">
       <h2 class="section-title">RSVP</h2>
       <div class="gold-rule"></div>
       <p style="text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:2rem">Kindly confirm your attendance
-        by December 5, 2026</p>
+        by December 20, 2026</p>
       <div class="rsvp-form">
-        <input type="text" placeholder="Your Full Name" id="rsvp-name" />
-        <input type="number" placeholder="Number of Guests (including yourself)" id="rsvp-guests" min="1" max="10" />
-        <select id="rsvp-attend">
-          <option value="" disabled selected>Will you be attending?</option>
-          <option value="yes">Joyfully Accepts</option>
-          <option value="no">Regretfully Declines</option>
-        </select>
-        <textarea placeholder="Any dietary requirements or a message for the us" rows="3" id="rsvp-msg"></textarea>
-        <button class="rsvp-submit" onclick="submitRSVP()">Kindly RSVP</button>
-        <p class="rsvp-success" id="rsvpSuccess">🌸 Thank you! We look forward to celebrating with you.</p>
+        <div class="rsvp-form-inner">
+          <span class="rsvp-kicker">A little note from you</span>
+          <div class="rsvp-fields">
+            <input type="text" placeholder="Your Full Name" id="rsvp-name" autocomplete="name" />
+            <input type="number" placeholder="Number of Guests (including yourself)" id="rsvp-guests" min="1" max="10" inputmode="numeric" />
+          </div>
+          <div style="margin-top:.9rem">
+            <span class="rsvp-choice-label">Will you be attending?</span>
+            <div class="rsvp-choices" role="radiogroup" aria-label="Attendance">
+              <label class="rsvp-choice"><input type="radio" name="rsvp-attend" value="yes"><span>✓ Joyfully accept</span></label>
+              <label class="rsvp-choice"><input type="radio" name="rsvp-attend" value="no"><span>× Regretfully decline</span></label>
+            </div>
+          </div>
+          <button class="rsvp-submit" style="width:100%;margin-top:.9rem" onclick="submitRSVP()">Confirm attendance</button>
+          <p class="rsvp-success" id="rsvpSuccess">🌸 Thank you! We look forward to celebrating with you.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <div class="contact-section" id="sec-8" style="position:relative; overflow:hidden;">
-    <div class="floral-corner floral-top-left" style="opacity:0.08"></div>
-    <div class="floral-corner floral-bottom-right" style="opacity:0.08"></div>
     <p class="section-label">Get In Touch</p>
     <h2 class="section-title">Reach Out</h2>
     <div class="gold-rule"></div>
@@ -1569,9 +1624,9 @@
 
     function submitRSVP() {
       var name = document.getElementById('rsvp-name').value.trim();
-      var attend = document.getElementById('rsvp-attend').value;
+      var selectedAttendance = document.querySelector('input[name="rsvp-attend"]:checked');
+      var attend = selectedAttendance ? selectedAttendance.value : '';
       var guests = document.getElementById('rsvp-guests').value;
-      var msg = document.getElementById('rsvp-msg').value;
       var btn = document.querySelector('.rsvp-submit');
       var successDiv = document.getElementById('rsvpSuccess');
 
@@ -1586,7 +1641,6 @@
       formData.append('name', name);
       formData.append('attend', attend);
       formData.append('guests', guests);
-      formData.append('message', msg);
 
       fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
         .then(function () {
@@ -1595,8 +1649,7 @@
           // Reset form
           document.getElementById('rsvp-name').value = '';
           document.getElementById('rsvp-guests').value = '';
-          document.getElementById('rsvp-attend').selectedIndex = 0;
-          document.getElementById('rsvp-msg').value = '';
+          document.querySelectorAll('input[name="rsvp-attend"]').forEach(function (input) { input.checked = false; });
           if (typeof triggerPetals === 'function') triggerPetals();
         })
         .catch(function (error) {
@@ -1681,7 +1734,8 @@
     const originalSubmitRSVP = submitRSVP;
     submitRSVP = function () {
       const name = document.getElementById('rsvp-name').value.trim();
-      const attend = document.getElementById('rsvp-attend').value;
+      const selectedAttendance = document.querySelector('input[name="rsvp-attend"]:checked');
+      const attend = selectedAttendance ? selectedAttendance.value : '';
       if (name && attend) {
         triggerPetals();
       }
