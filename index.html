@@ -50,8 +50,8 @@
       --gold-pale: #FBF4E2;
       --gold-metallic: linear-gradient(135deg, #D4AF37 0%, #F9E076 50%, #D4AF37 100%);
       --crimson: #8B1A1A;
-      --cream: #FAF6EE;
-      --dark: #1A0F05;
+      --cream: #FDFBF7;
+      --dark: #0f1c16; /* Deep elegant green/charcoal */
       --muted: #8E7356;
       --muted-deep: #5D4B37;
       --glass-bg: rgba(255, 255, 255, 0.45);
@@ -132,40 +132,49 @@
       justify-content: center;
       text-align: center;
       padding: 3rem 1.5rem;
-      overflow: hidden
+      overflow: hidden;
+      background: #000;
     }
 
     .hero-bg {
       position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 20% 50%, rgba(184, 134, 11, .1) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(139, 26, 26, .08) 0%, transparent 60%), var(--cream);
-      z-index: 0
+      inset: -5%; /* slightly larger for ken burns */
+      background: url('vs.jpg') center/cover no-repeat;
+      z-index: 0;
+      animation: kenBurns 20s ease-out infinite alternate;
+      opacity: 0.6; /* dark overlay for text readability */
+    }
+    
+    @keyframes kenBurns {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
     }
 
     .hero::before {
       content: '';
       position: absolute;
       inset: 24px;
-      border: 1.5px solid var(--gold);
-      opacity: .45;
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      opacity: .6;
       pointer-events: none;
-      z-index: 1
+      z-index: 1;
     }
 
     .hero::after {
       content: '';
       position: absolute;
       inset: 32px;
-      border: .5px solid var(--gold);
-      opacity: .25;
+      border: .5px solid rgba(255, 255, 255, 0.3);
+      opacity: .4;
       pointer-events: none;
-      z-index: 1
+      z-index: 1;
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 680px
+      max-width: 680px;
+      color: #fff;
     }
 
     .lang-tag {
@@ -254,8 +263,8 @@
       font-size: clamp(2.8rem, 11vw, 6.2rem);
       font-weight: 300;
       line-height: 0.9;
-      color: var(--dark);
-      text-shadow: 0 1px 3px rgba(212, 175, 55, 0.1);
+      color: #fff;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
       margin-bottom: 1.2rem;
       margin-top: 0.8rem;
     }
@@ -264,7 +273,7 @@
       font-family: 'Bromello', cursive;
       font-size: 0.8em;
       font-weight: 300;
-      color: var(--gold);
+      color: var(--gold-light);
       display: block;
       margin: .2rem 0;
       line-height: 1;
@@ -275,11 +284,12 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(1rem, 4vw, 1.25rem);
       font-style: italic;
-      color: var(--muted);
+      color: rgba(255, 255, 255, 0.9);
       margin: 1.6rem 0 2rem;
       line-height: 1.8;
       text-align: center;
       letter-spacing: 0.01em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
 
@@ -526,6 +536,54 @@
       font-weight: 500;
     }
 
+    /* CALENDAR MOTIF */
+    .calendar {
+      margin-top: 1rem;
+      display: inline-block;
+      width: 100%;
+      max-width: 250px;
+    }
+    .cal-month {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      color: var(--gold-deep);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 13px;
+    }
+    .cal-day-name {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .cal-day {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      color: var(--dark);
+    }
+    .cal-day.empty {
+      color: transparent;
+    }
+    .cal-day.highlight {
+      background: var(--gold);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+      transform: scale(1.1);
+    }
+
     /* SCHEDULE */
     .schedule-list {
       list-style: none;
@@ -568,130 +626,138 @@
       font-weight: 500;
     }
 
-    /* GALLERY CAROUSEL */
+    /* MASONRY GALLERY */
     .gallery-section {
-      background: #fffdf8
+      background: #fffdf8;
     }
-
-    .carousel-wrap {
-      position: relative;
+    
+    .masonry-grid {
+      column-count: 4;
+      column-gap: 14px;
+      padding-top: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 900px) {
+      .masonry-grid { column-count: 3; }
+    }
+    
+    @media (max-width: 500px) {
+      .masonry-grid { column-count: 2; column-gap: 10px; }
+    }
+    
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 14px;
+      border-radius: 16px;
       overflow: hidden;
-      border-radius: 6px;
-      border: 1px solid rgba(184, 134, 11, .25)
+      cursor: zoom-in;
+      position: relative;
+      background: rgba(0,0,0,0.03);
+      
+      /* Animation styles */
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.19, 1, 0.22, 1), transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+      will-change: opacity, transform;
+    }
+    
+    .masonry-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .carousel-track {
-      display: flex;
-      transition: transform .5s cubic-bezier(.4, 0, .2, 1);
-      touch-action: pan-y;
-      user-select: none;
-      -webkit-user-drag: none;
+    @media (max-width: 500px) {
+      .masonry-item { margin-bottom: 10px; border-radius: 12px; }
     }
-
-    .carousel-slide {
-      min-width: 100%;
-      position: relative
-    }
-
-    .carousel-slide img {
+    
+    .masonry-item img {
       width: 100%;
-      height: 520px;
-      object-fit: contain;
-      /* PC version - see whole image */
-      object-position: center;
-      background: rgba(184, 134, 11, 0.03);
       display: block;
-      transition: all 0.3s ease;
+      transition: filter 0.25s ease;
     }
-
-    @media (max-width: 600px) {
-      .carousel-slide img {
-        height: auto;
-        aspect-ratio: 4 / 5;
-        max-height: 60vh;
-        object-fit: cover;
-        /* Mobile version - fill screen ratio */
-      }
+    
+    .masonry-item:hover img {
+      filter: brightness(0.85);
     }
-
-    .carousel-slide img:hover {
-      background: rgba(184, 134, 11, 0.08)
-    }
-
-    .slide-placeholder {
-      width: 100%;
-      height: 420px;
+    
+    /* Pinterest-style hover button */
+    .masonry-item::after {
+      content: '⤢';
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #111;
+      border-radius: 50%;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      font-family: 'Cormorant Garamond', serif
+      font-size: 16px;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(10px) scale(0.9);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
-
-    .slide-caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 1.2rem 1.5rem;
-      background: linear-gradient(transparent, rgba(42, 26, 10, .75));
-      color: rgba(255, 255, 255, .9);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1rem;
-      text-align: center
+    
+    .masonry-item:hover::after {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
-
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(42, 26, 10, .55);
-      border: none;
-      color: var(--gold-light);
-      cursor: pointer;
-      padding: .7rem 1.1rem;
-      font-size: 1.2rem;
-      z-index: 10;
-      transition: background .2s;
-      border-radius: 2px;
-      line-height: 1
-    }
-
-    .carousel-btn:hover {
-      background: rgba(42, 26, 10, .85)
-    }
-
-    .carousel-btn.prev {
-      left: 12px
-    }
-
-    .carousel-btn.next {
-      right: 12px
-    }
-
-    .carousel-dots {
+    
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 10, 5, 0.95);
+      z-index: 100000;
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 8px;
-      margin-top: 14px
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(5px);
     }
-
-    .cdot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(184, 134, 11, .25);
+    
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 5px 40px rgba(0,0,0,0.5);
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .lightbox.active img {
+      transform: scale(1);
+    }
+    
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: 300;
       cursor: pointer;
-      border: none;
-      padding: 0;
-      transition: all .2s
+      line-height: 1;
+      transition: color 0.3s ease;
     }
-
-    .cdot.active {
-      background: var(--gold);
-      transform: scale(1.5)
+    
+    .lightbox-close:hover {
+      color: var(--gold);
     }
 
     /* MAP */
@@ -1259,6 +1325,70 @@
       85% { opacity: 0.55; }
       100% { transform: translateY(105vh) rotate(360deg) scale(1.1); opacity: 0; }
     }
+    /* MUSIC PLAYER UI */
+    .music-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 50px;
+      height: 50px;
+      background: var(--dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--gold);
+      transition: all 0.3s ease;
+    }
+    
+    .music-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    }
+    
+    .music-icon {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .bar {
+      width: 3px;
+      background-color: var(--gold-light);
+      border-radius: 2px;
+      transition: height 0.2s ease;
+    }
+    
+    .bar:nth-child(1) { height: 10px; animation: sound 1.2s -1.2s linear infinite alternate; }
+    .bar:nth-child(2) { height: 24px; animation: sound 1.2s -0.8s linear infinite alternate; }
+    .bar:nth-child(3) { height: 16px; animation: sound 1.2s -0.4s linear infinite alternate; }
+    .bar:nth-child(4) { height: 20px; animation: sound 1.2s -1.0s linear infinite alternate; }
+    
+    @keyframes sound {
+      0% { height: 4px; opacity: 0.5; }
+      100% { height: 24px; opacity: 1; }
+    }
+    
+    .music-toggle.paused .bar {
+      animation-play-state: paused;
+      height: 4px !important;
+      opacity: 0.5;
+    }
+    
+    @media (max-width: 600px) {
+      .music-toggle {
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+      }
+    }
   </style>
 </head>
 
@@ -1309,12 +1439,7 @@
   <section class="hero" id="sec-0">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <div class="lang-tag">Wedding Reception</div>
-
-      <!-- PHOTO: Replace photo-placeholder div with <img src="couple.jpg" style="width:100%;height:100%;object-fit:cover"> -->
-      <div class="photo-frame">
-        <img src="vs.jpg" alt="Sethulekshmi & Vinayak" loading="eager" fetchpriority="high" decoding="async">
-      </div>
+      <div class="lang-tag" style="color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Wedding Reception</div>
 
       <p class="invite-text">Together with their families, joyfully invite you<br>to celebrate the beginning of their
         forever</p>
@@ -1323,11 +1448,11 @@
         <span class="ampersand">&amp;</span>
         Vinayak
       </h1>
-      <p class="invite-text" style="margin-top:1.8rem; color: var(--muted-deep); font-weight: 500;">December 27, 2026 &nbsp;·&nbsp; Trivandrum</p>
+      <p class="invite-text" style="margin-top:1.8rem; font-weight: 500;">December 27, 2026 &nbsp;·&nbsp; Trivandrum</p>
     </div>
     <div class="scroll-hint">
-      <span>scroll</span>
-      <div class="scroll-arrow"></div>
+      <span style="color: #fff;">scroll</span>
+      <div class="scroll-arrow" style="border-color: #fff;"></div>
     </div>
   </section>
 
@@ -1355,11 +1480,20 @@
       <h2 class="section-title">Save the Date</h2>
       <div class="gold-rule"></div>
       <div class="dv-grid">
-        <div class="dv-card">
-          <span class="dv-icon">📅</span>
-          <p class="dv-heading">Date &amp; Time</p>
-          <p class="dv-main">December 27<br>2026</p>
-          <p class="dv-sub">Sunday<br>Reception begins 4:00 PM onwards</p>
+        <div class="dv-card" style="padding-bottom: 1rem;">
+          <p class="dv-heading" style="margin-bottom: 0;">Date &amp; Time</p>
+          <div class="calendar">
+            <div class="cal-month">December 2026</div>
+            <div class="cal-grid">
+              <div class="cal-day-name">S</div><div class="cal-day-name">M</div><div class="cal-day-name">T</div><div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div>
+              <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div>
+              <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div>
+              <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div>
+              <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div>
+              <div class="cal-day highlight">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div><div class="cal-day empty"></div><div class="cal-day empty"></div>
+            </div>
+          </div>
+          <p class="dv-sub" style="margin-top: 1rem;">Reception begins 4:00 PM onwards</p>
         </div>
         <div class="dv-card">
           <span class="dv-icon">📍</span>
@@ -1379,37 +1513,36 @@
 
   <!-- GALLERY -->
   <section class="gallery-section" id="sec-4" style="position:relative; overflow:hidden;">
-    <div class="section-inner fade-in">
-      <h2 class="section-title">Our Gallery</h2>
-      <div class="gold-rule"></div>
-      <div class="carousel-wrap">
-        <button class="carousel-btn prev" onclick="moveSlide(-1)">&#8592;</button>
-        <button class="carousel-btn next" onclick="moveSlide(1)">&#8594;</button>
-        <div class="carousel-track" id="carouselTrack">
-
-          <div class="carousel-slide"><img src="1.jpg" alt="Gallery Photo 1" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="2.jpg" alt="Gallery Photo 2" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="3.jpg" alt="Gallery Photo 3" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="4.jpg" alt="Gallery Photo 4" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="5.jpg" alt="Gallery Photo 5" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="6.jpg" alt="Gallery Photo 6" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="7.jpg" alt="Gallery Photo 7" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="8.jpg" alt="Gallery Photo 8" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="9.jpg" alt="Gallery Photo 9" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="10.jpg" alt="Gallery Photo 10" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="12.jpg" alt="Gallery Photo 12" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="13.jpg" alt="Gallery Photo 13" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="14.jpg" alt="Gallery Photo 14" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="15.jpg" alt="Gallery Photo 15" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="16.jpg" alt="Gallery Photo 16" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="17.jpg" alt="Gallery Photo 17" loading="lazy" decoding="async" draggable="false"></div>
-          <div class="carousel-slide"><img src="18.jpg" alt="Gallery Photo 18" loading="lazy" decoding="async" draggable="false"></div>
-
-        </div>
+    <div class="section-inner">
+      <h2 class="section-title fade-in">Our Gallery</h2>
+      <div class="gold-rule fade-in"></div>
+      <div class="masonry-grid" id="masonryGrid">
+        <div class="masonry-item"><img src="1.jpg" alt="Gallery Photo 1" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="2.jpg" alt="Gallery Photo 2" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="3.jpg" alt="Gallery Photo 3" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="4.jpg" alt="Gallery Photo 4" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="5.jpg" alt="Gallery Photo 5" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="6.jpg" alt="Gallery Photo 6" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="7.jpg" alt="Gallery Photo 7" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="8.jpg" alt="Gallery Photo 8" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="9.jpg" alt="Gallery Photo 9" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="10.jpg" alt="Gallery Photo 10" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="12.jpg" alt="Gallery Photo 12" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="13.jpg" alt="Gallery Photo 13" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="14.jpg" alt="Gallery Photo 14" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="15.jpg" alt="Gallery Photo 15" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="16.jpg" alt="Gallery Photo 16" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="17.jpg" alt="Gallery Photo 17" loading="lazy" decoding="async"></div>
+        <div class="masonry-item"><img src="18.jpg" alt="Gallery Photo 18" loading="lazy" decoding="async"></div>
       </div>
-      <div class="carousel-dots" id="carouselDots"></div>
     </div>
   </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Enlarged photo">
+  </div>
 
   <!-- GOOGLE MAP -->
   <section id="sec-5" style="position:relative; overflow:hidden;">
@@ -1502,6 +1635,16 @@
     <source src="song.m4a" type="audio/aac">
   </audio>
 
+  <!-- MUSIC PLAYER TOGGLE -->
+  <div id="musicToggle" class="music-toggle paused" onclick="toggleMusic()" aria-label="Toggle background music">
+    <div class="music-icon">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
   <script>
     // ===== COUNTDOWN to Dec 27 2026 =====
     function updateCountdown() {
@@ -1523,112 +1666,32 @@
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // ===== GALLERY CAROUSEL (Infinite Circular) =====
-    var track = document.getElementById('carouselTrack');
-    var originalSlides = track.querySelectorAll('.carousel-slide');
-    var slidesCount = originalSlides.length;
-    var dotsWrap = document.getElementById('carouselDots');
-    var autoTimer, cur = 0;
-    var isTransitioning = false;
-
-    // Clone first and last for seamless loop
-    var firstClone = originalSlides[0].cloneNode(true);
-    var lastClone = originalSlides[slidesCount - 1].cloneNode(true);
-    track.appendChild(firstClone);
-    track.insertBefore(lastClone, originalSlides[0]);
-
-    var allSlides = track.querySelectorAll('.carousel-slide');
-    track.style.transform = 'translateX(-100%)'; // Start at first real slide
-
-    originalSlides.forEach(function (_, i) {
-      var d = document.createElement('button');
-      d.className = 'cdot' + (i === 0 ? ' active' : '');
-      d.addEventListener('click', function () { goSlide(i) });
-      dotsWrap.appendChild(d);
-    });
-
-    function updateDots() {
-      document.querySelectorAll('.cdot').forEach(function (d, i) {
-        d.className = 'cdot' + (i === cur ? ' active' : '');
+    // ===== LIGHTBOX GALLERY =====
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    
+    document.querySelectorAll('.masonry-item img').forEach(function(img) {
+      img.addEventListener('click', function() {
+        lightboxImg.src = this.src;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden'; // prevent scrolling
       });
-    }
-
-    function goSlide(n, instant = false) {
-      if (isTransitioning && !instant) return;
-      isTransitioning = true;
-
-      track.style.transition = instant ? 'none' : 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-      cur = n;
-
-      // Calculate offset based on clones (cur is 0-indexed original, so index in allSlides is cur + 1)
-      track.style.transform = 'translateX(-' + (cur + 1) * 100 + '%)';
-      updateDots();
-
-      if (!instant) {
-        setTimeout(function () { isTransitioning = false; }, 600);
-      } else {
-        isTransitioning = false;
-      }
-    }
-
-    function moveSlide(dir) {
-      if (isTransitioning) return;
-      isTransitioning = true;
-
-      track.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-      var nextCur = cur + dir;
-      track.style.transform = 'translateX(-' + (nextCur + 1) * 100 + '%)';
-
-      setTimeout(function () {
-        track.style.transition = 'none';
-        if (nextCur >= slidesCount) {
-          cur = 0;
-        } else if (nextCur < 0) {
-          cur = slidesCount - 1;
-        } else {
-          cur = nextCur;
-        }
-        track.style.transform = 'translateX(-' + (cur + 1) * 100 + '%)';
-        updateDots();
-        isTransitioning = false;
-      }, 600);
-    }
-
-    function startAuto() { autoTimer = setInterval(function () { moveSlide(1) }, 2000) }
-    function stopAuto() { clearInterval(autoTimer) }
-    startAuto();
-    track.addEventListener('mouseenter', stopAuto);
-    track.addEventListener('mouseleave', startAuto);
-
-    var tx = 0, ty = 0, isScrolling = false;
-    track.addEventListener('touchstart', function (e) {
-      tx = e.touches[0].clientX;
-      ty = e.touches[0].clientY;
-      isScrolling = false;
-      stopAuto();
-    }, { passive: true });
-
-    track.addEventListener('touchmove', function (e) {
-      var dx = tx - e.touches[0].clientX;
-      var dy = ty - e.touches[0].clientY;
-      if (Math.abs(dy) > Math.abs(dx)) {
-        isScrolling = true;
-      }
-    }, { passive: true });
-
-    track.addEventListener('touchend', function (e) {
-      if (isScrolling) {
-        startAuto();
-        return;
-      }
-      var dx = tx - e.changedTouches[0].clientX;
-      if (Math.abs(dx) > 50) {
-        moveSlide(dx > 0 ? 1 : -1);
-      }
-      startAuto();
     });
-
-    track.addEventListener('touchcancel', startAuto);
+    
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(function() {
+        lightboxImg.src = '';
+      }, 300);
+    }
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
 
     // ===== RSVP (Google Sheets) =====
     var scriptURL = 'https://script.google.com/macros/s/AKfycbx7r_Oshn_upsLr6G6fdHburcUEseU4MriA4MJcdTV0bwPl2J7uQUD_vnvrAUhA4VCvsw/exec'; 
@@ -1673,9 +1736,33 @@
 
     // ===== FADE IN =====
     var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('visible') })
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        } else {
+          e.target.classList.remove('visible'); // Reset animation
+        }
+      });
     }, { threshold: .12 });
     document.querySelectorAll('.fade-in').forEach(function (f) { obs.observe(f) });
+
+    // ===== MASONRY STAGGERED FADE IN =====
+    var masonryObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        } else {
+          e.target.classList.remove('visible'); // Reset animation
+        }
+      });
+    }, { threshold: 0.05 });
+    
+    // Add staggered delay to each item based on its position
+    document.querySelectorAll('.masonry-item').forEach(function (item, i) {
+      // Create a stagger effect (0s, 0.1s, 0.2s, etc. resetting every 8 items)
+      item.style.transitionDelay = (i % 8) * 0.1 + 's';
+      masonryObs.observe(item);
+    });
 
     // ===== NAV DOTS =====
     var secIds = ['sec-0', 'sec-1', 'sec-2', 'sec-4', 'sec-5', 'sec-7', 'sec-8'];
@@ -1761,36 +1848,53 @@
       }, 2000); // 2s delay to showcase cinematic animations and petal shower
     });
 
-    // ===== AUTO-PLAY BACKGROUND MUSIC =====
+    // ===== AUDIO PLAYBACK & TOGGLE =====
     const music = document.getElementById('bg-music');
+    const musicToggleBtn = document.getElementById('musicToggle');
+    let userInteracted = false;
+    let isPlaying = false;
     
     if (music) {
+      music.volume = 0.5; // Set volume to 50%
       music.addEventListener('error', function () {
-        console.error("Audio failed to load. Error code:", music.error ? music.error.code : 'unknown', "Message:", music.error ? music.error.message : 'no message');
+        console.error("Audio failed to load.");
       });
-      music.addEventListener('canplaythrough', function () {
-        console.log("Audio file loaded and ready to play.");
+      music.addEventListener('play', () => {
+        isPlaying = true;
+        musicToggleBtn.classList.remove('paused');
+      });
+      music.addEventListener('pause', () => {
+        isPlaying = false;
+        musicToggleBtn.classList.add('paused');
       });
     }
 
-    function startMusicOnInteraction() {
-      if (music) {
-        music.play().then(() => {
-          console.log('Background music started playing successfully!');
-          // Success: clean up listeners so we don't call play() repeatedly
-          document.removeEventListener('click', startMusicOnInteraction);
-          document.removeEventListener('touchstart', startMusicOnInteraction);
-          document.removeEventListener('pointerdown', startMusicOnInteraction);
-          document.removeEventListener('keydown', startMusicOnInteraction);
-        }).catch(err => {
-          console.log('Audio autoplay blocked or waiting for user interaction: ', err);
-        });
+    function toggleMusic() {
+      if (!music) return;
+      if (isPlaying) {
+        music.pause();
+      } else {
+        music.play().catch(e => console.log(e));
       }
     }
+
+    function startMusicOnInteraction() {
+      if (userInteracted || !music) return;
+      userInteracted = true;
+      music.play().then(() => {
+        console.log('Background music started playing!');
+        document.removeEventListener('click', startMusicOnInteraction);
+        document.removeEventListener('touchstart', startMusicOnInteraction);
+        document.removeEventListener('scroll', startMusicOnInteraction);
+      }).catch(err => {
+        console.log('Audio autoplay blocked: ', err);
+        userInteracted = false;
+      });
+    }
+    
     document.addEventListener('click', startMusicOnInteraction);
     document.addEventListener('touchstart', startMusicOnInteraction);
-    document.addEventListener('pointerdown', startMusicOnInteraction);
-    document.addEventListener('keydown', startMusicOnInteraction);
+    document.addEventListener('scroll', startMusicOnInteraction, { passive: true });
   </script>
 
 </body>
