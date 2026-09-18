@@ -883,21 +883,20 @@
       text-align: center
     }
 
-    .rsvp-form {
-      max-width: 430px;
+    .invitation-card-wrap {
+      max-width: 500px;
       margin: 0 auto;
-      padding: 9px;
-      display: flex;
-      flex-direction: column;
-      gap: .7rem;
-      text-align: left;
       border: 1px solid rgba(184, 134, 11, .38);
-      border-radius: 20px;
-      background: rgba(255, 253, 248, .72);
-      box-shadow: 0 17px 38px rgba(69, 47, 17, .09);
-      position: relative;
+      border-radius: 12px;
       overflow: hidden;
-      isolation: isolate;
+      box-shadow: 0 17px 38px rgba(69, 47, 17, .09);
+      background: #fff;
+    }
+    
+    .invitation-card-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
 
     .rsvp-form-inner {
@@ -1459,7 +1458,7 @@
     <button class="nav-dot" data-sec="2" title="Date"></button>
     <button class="nav-dot" data-sec="4" title="Gallery"></button>
     <button class="nav-dot" data-sec="5" title="Map"></button>
-    <button class="nav-dot" data-sec="7" title="RSVP"></button>
+    <button class="nav-dot" data-sec="7" title="Invitation"></button>
     <button class="nav-dot" data-sec="8" title="Contact"></button>
   </nav>
 
@@ -1602,27 +1601,10 @@
   <!-- RSVP -->
   <section id="sec-7" style="position:relative; overflow:hidden;">
     <div class="section-inner fade-in">
-      <h2 class="section-title">RSVP</h2>
+      <h2 class="section-title">Invitation</h2>
       <div class="gold-rule"></div>
-      <p style="text-align:center;color:var(--muted);font-size:.9rem;margin-bottom:2rem">Kindly confirm your attendance
-        by December 20, 2026</p>
-      <div class="rsvp-form">
-        <div class="rsvp-form-inner">
-          <span class="rsvp-kicker">A little note from you</span>
-          <div class="rsvp-fields">
-            <input type="text" placeholder="Your Full Name" id="rsvp-name" autocomplete="name" />
-            <input type="number" placeholder="Number of Guests (including yourself)" id="rsvp-guests" min="1" max="10" inputmode="numeric" />
-          </div>
-          <div style="margin-top:.9rem">
-            <span class="rsvp-choice-label">Will you be attending?</span>
-            <div class="rsvp-choices" role="radiogroup" aria-label="Attendance">
-              <label class="rsvp-choice"><input type="radio" name="rsvp-attend" value="yes"><span>✓ Joyfully accept</span></label>
-              <label class="rsvp-choice"><input type="radio" name="rsvp-attend" value="no"><span>× Regretfully decline</span></label>
-            </div>
-          </div>
-          <button class="rsvp-submit" style="width:100%;margin-top:.9rem" onclick="submitRSVP()">Confirm attendance</button>
-          <p class="rsvp-success" id="rsvpSuccess">🌸 Thank you! We look forward to celebrating with you.</p>
-        </div>
+      <div class="invitation-card-wrap">
+        <img src="wedding_card.jpg" alt="Wedding Invitation Card" loading="lazy">
       </div>
     </div>
   </section>
