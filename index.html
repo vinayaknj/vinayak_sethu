@@ -1740,10 +1740,13 @@
         if (e.isIntersecting) {
           e.target.classList.add('visible');
         } else {
-          e.target.classList.remove('visible'); // Reset animation
+          // Only reset animation if it scrolled out at the bottom (user scrolled up)
+          if (e.boundingClientRect.top > 0) {
+            e.target.classList.remove('visible');
+          }
         }
       });
-    }, { threshold: .12 });
+    }, { threshold: 0.05 });
     document.querySelectorAll('.fade-in').forEach(function (f) { obs.observe(f) });
 
     // ===== MASONRY STAGGERED FADE IN =====
@@ -1752,7 +1755,10 @@
         if (e.isIntersecting) {
           e.target.classList.add('visible');
         } else {
-          e.target.classList.remove('visible'); // Reset animation
+          // Only reset animation if it scrolled out at the bottom
+          if (e.boundingClientRect.top > 0) {
+            e.target.classList.remove('visible');
+          }
         }
       });
     }, { threshold: 0.05 });
