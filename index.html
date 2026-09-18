@@ -1739,11 +1739,7 @@
       entries.forEach(function (e) {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-        } else {
-          // Only reset animation if it scrolled out at the bottom (user scrolled up)
-          if (e.boundingClientRect.top > 0) {
-            e.target.classList.remove('visible');
-          }
+          obs.unobserve(e.target);
         }
       });
     }, { threshold: 0.05 });
@@ -1754,21 +1750,31 @@
       entries.forEach(function (e) {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-        } else {
-          // Only reset animation if it scrolled out at the bottom
-          if (e.boundingClientRect.top > 0) {
-            e.target.classList.remove('visible');
-          }
+          masonryObs.unobserve(e.target);
         }
       });
     }, { threshold: 0.05 });
     
     // Add staggered delay to each item based on its position
-    document.querySelectorAll('.masonry-item').forEach(function (item, i) {
-      // Create a stagger effect (0s, 0.1s, 0.2s, etc. resetting every 8 items)
+    var masonryItems = document.querySelectorAll('.masonry-item');
+    masonryItems.forEach(function (item, i) {
       item.style.transitionDelay = (i % 8) * 0.1 + 's';
       masonryObs.observe(item);
     });
+
+    // Reset animations when scrolled back to the very top
+    window.addEventListener('scroll', function() {
+      if (window.scrollY < 100) {
+        document.querySelectorAll('.fade-in.visible').forEach(function (el) {
+          el.classList.remove('visible');
+          obs.observe(el);
+        });
+        document.querySelectorAll('.masonry-item.visible').forEach(function (el) {
+          el.classList.remove('visible');
+          masonryObs.observe(el);
+        });
+      }
+    }, { passive: true });
 
     // ===== NAV DOTS =====
     var secIds = ['sec-0', 'sec-1', 'sec-2', 'sec-4', 'sec-5', 'sec-7', 'sec-8'];
